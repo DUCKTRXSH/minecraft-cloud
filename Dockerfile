@@ -2,6 +2,7 @@ FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# ติดตั้งซอฟต์แวร์ที่จำเป็น
 RUN apt update && apt install -y \
   xfce4 xfce4-goodies \
   x11vnc xvfb \
@@ -25,9 +26,11 @@ RUN mkdir -p ~/.vnc && \
 RUN mkdir -p /root/.vnc/web && \
     ln -s /usr/share/novnc/vnc.html /root/.vnc/web/index.html
 
+# สคริปต์เริ่มต้น
 COPY startup.sh /startup.sh
 RUN chmod +x /startup.sh
 
 EXPOSE 6080
 
+# ตั้งค่าเริ่มต้นของคอนเทนเนอร์
 CMD ["/startup.sh"]
