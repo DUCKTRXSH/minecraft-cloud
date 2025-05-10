@@ -1,16 +1,29 @@
 #!/bin/bash
 
-# เริ่ม xvfb (จำลองหน้าจอ)
-Xvfb :0 -screen 0 1024x768x16 &
+# ตั้งค่าตัวแปร DISPLAY
+export DISPLAY=:0
 
-# เริ่ม Desktop
+# เริ่ม xvfb (จำลองหน้าจอเสมือน)
+Xvfb :0 -screen 0 1280x800x24 &
+
+# รอให้ Xvfb พร้อม
+sleep 2
+
+# กำหนด D-Bus (สำหรับ desktop env)
+export $(dbus-launch)
+
+# เริ่ม Desktop (XFCE)
 startxfce4 &
 
-# รอ Desktop พร้อม
+# รอ Desktop ทำงานให้เสร็จ
 sleep 5
 
-# เริ่ม VNC server
-x11vnc -display :0 -passwd 1234 -forever -nopw -shared &
+# สร้างไฟล์รหัสผ่าน VNC แบบปลอดภัย
+mkdir -p ~/.vnc
+x11vnc -storepasswd 1234 ~/.vnc/passwd
 
-# เริ่ม noVNC บนพอร์ต 6080
+# เริ่ม VNC server แบบใช้งานได้จริง และปลอดภัย
+x11vnc -display :0 -rfbauth ~/.vnc/passwd -forever -shared -noxdamage -repeat -cursor arrow &
+
+# เริ่ม noVNC
 websockify --web=/usr/share/novnc/ 6080 localhost:5900
