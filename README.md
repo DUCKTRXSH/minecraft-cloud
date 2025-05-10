@@ -7,7 +7,7 @@
 1. เปิด GitHub Codespace ของตัวเอง
 2. เปิด Terminal แล้วรันคำสั่ง:
    ```bash
-   git clone https://github.com/<your-username>/minecraft-cloud.git
+   git clone https://github.com/DUCKTRXSH/minecraft-cloud.git
    cd minecraft-cloud
    docker build -t mc .
    docker run -p 6080:6080 mc
